@@ -141,18 +141,32 @@ public class Reference implements Serializable, Comparable<Reference> {
      */
     @Override
     public int compareTo(Reference o) {
-        if (source.equals(o.source)) {
-            if (name.equals(o.name)) {
-                if (url.equals(o.url)) {
+    	if (o == null){
+    		return -1;
+    	}
+        if (source != null && source.equals(o.source)) {
+            if (name != null && name.equals(o.name)) {
+                if (url != null && url.equals(o.url)) {
                     return 0; //they are equal
                 } else {
-                    return url.compareTo(o.url);
+                    return compareWithNullSupport(url, o.url);
                 }
             } else {
-                return name.compareTo(o.name);
+                return compareWithNullSupport(name, o.name);
             }
         } else {
-            return source.compareTo(o.source);
+            return compareWithNullSupport(source, o.source);
         }
     }
+
+    private int compareWithNullSupport(String val1, String val2){
+    	if (val1 == null && val2 == null){
+    		return 0;
+    	}else if (val1 == null){
+    		return -1;
+    	}else{
+    		return val1.compareTo(val2);
+    	}
+    }
+
 }
